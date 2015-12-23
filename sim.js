@@ -35,8 +35,12 @@ var discharge = function (newPos) {
     }
 }
 
+var isOnFloor = function (newPos) {
+    return newPos >= 10 && newPos <= 20;
+};
+
 var updateElectrons = function (newPos) {
-    if (newPos === contactPosition || (Math.max(newPos, footPosition) > contactPosition && Math.min(newPos, footPosition) < contactPosition)) {
+    if (isOnFloor(newPos)) {
         numElectrons++;
         electrons.value = numElectrons;
         removeAlert();
@@ -44,10 +48,10 @@ var updateElectrons = function (newPos) {
 };
 
 var setFootValueText = function (newPos) {
-    //TODO: Set proper message based on position
-    var msg = "Position " + newPos;
+    var msg = isOnFloor(newPos) ? "foot is on the carpet" : "foot is off the carpet";
+    var position = "Position " + newPos + ", " + msg;
 
-    footSlider.setAttribute("aria-valuetext", msg);
+    footSlider.setAttribute("aria-valuetext", position);
 };
 
 // event binding
