@@ -54,6 +54,45 @@ var setFootValueText = function (newPos) {
     footSlider.setAttribute("aria-valuetext", position);
 };
 
+var isWithin = function (val, args) {
+    for(var i = 1; i < arguments.length; i++) {
+        range = arguments[i];
+        var max = Math.max.apply(null, range);
+        var min = Math.min.apply(null, range);
+        if (max >= val && min <= val) {
+            return true;
+        }
+    }
+    return false;
+};
+
+var getHandMessage = function (newPos) {
+    if (newPos === 15) {
+        return "closest to the door knob";
+    } else if (isWithin(newPos, [13, 14], [16, 17])) {
+        return "very close to the door knob";
+    } else if (isWithin(newPos, [8, 12], [18, 22])) {
+        return "close to the door knob";
+    } else if (isWithin(newPos, [3, 7], [23, 27])) {
+        return "somewhat close to the door knob";
+    } else if (isWithin(newPos, [0, 2], [28, 32], [58, 60])) {
+        return "neither far or close to the door knob";
+    } else if (isWithin(newPos, [33, 37], [53, 57])) {
+        return "neither far or close to the door knob";
+    } else if (isWithin(newPos, [38, 42], [48, 52])) {
+        return "very far from the door knob";
+    } else if (isWithin(newPos, [43, 47])) {
+        return "farthest from the door knob";
+    }
+};
+
+var setHandValueText = function (newPos) {
+    var msg = getHandMessage(newPos);
+    var position = "Position " + newPos + ", " + msg;
+
+    handSlider.setAttribute("aria-valuetext", position);
+}
+
 // event binding
 footSlider.addEventListener("input", function (e) {
     var newPos = Number(e.target.value);
@@ -64,6 +103,7 @@ footSlider.addEventListener("input", function (e) {
 
 handSlider.addEventListener("input", function (e) {
     var newPos = Number(e.target.value);
+    setHandValueText(newPos);
     discharge(newPos);
 });
 
