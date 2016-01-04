@@ -30,7 +30,7 @@ var removeAlert = function () {
 var discharge = function (newPos) {
     if (newPos === contactPosition) {
         numElectrons = 0;
-        electrons.value = numElectrons;
+        electrons.value = getElectronsMessage(numElectrons);
         addAlert();
     }
 }
@@ -39,10 +39,26 @@ var isOnFloor = function (newPos) {
     return newPos >= 10 && newPos <= 20;
 };
 
+var addCharge = function () {
+    numElectrons = Math.min(100, numElectrons + 1);
+};
+
+var getElectronsMessage = function (numElectrons) {
+    if (numElectrons <= 0) {
+        return "no";
+    } else if (numElectrons < 34) {
+        return "a small amount";
+    } else if (numElectrons < 67) {
+        return "a moderate amount";
+    } else if (numElectrons >= 67) {
+        return "a large amount";
+    }
+};
+
 var updateElectrons = function (newPos) {
     if (isOnFloor(newPos)) {
-        numElectrons++;
-        electrons.value = numElectrons;
+        addCharge();
+        electrons.value = getElectronsMessage(numElectrons);
         removeAlert();
     }
 };
