@@ -117,14 +117,20 @@ var setHandValueText = function (newPos) {
 }
 
 // event binding
-footSlider.addEventListener("input", function (e) {
+
+// In IE 10 and 11 the input event isn't fired for range inputs. However, the
+// change event works as like the input event in other browsers.
+// https://msdn.microsoft.com/en-us/library/gg592978(v=vs.85).aspx
+var eventType = navigator.appVersion.indexOf("Trident") >= 0 ? "change" : "input";
+
+footSlider.addEventListener(eventType, function (e) {
     var newPos = Number(e.target.value);
     updateElectrons(newPos);
     footPosition = newPos;
     setFootValueText(newPos);
 }, false);
 
-handSlider.addEventListener("input", function (e) {
+handSlider.addEventListener(eventType, function (e) {
     var newPos = Number(e.target.value);
     setHandValueText(newPos);
     discharge(newPos);
