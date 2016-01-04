@@ -30,7 +30,7 @@ var removeAlert = function () {
 var discharge = function (newPos) {
     if (newPos === contactPosition) {
         numElectrons = 0;
-        electrons.value = getElectronsMessage(numElectrons);
+        setElectronMessage(numElectrons);
         addAlert();
     }
 }
@@ -45,20 +45,27 @@ var addCharge = function () {
 
 var getElectronsMessage = function (numElectrons) {
     if (numElectrons <= 0) {
-        return "no";
+        return "no negative charges";
     } else if (numElectrons < 34) {
-        return "a small amount";
+        return "a small amount of negative charges";
     } else if (numElectrons < 67) {
-        return "a moderate amount";
+        return "a moderate amount of negative charges";
     } else if (numElectrons >= 67) {
-        return "a large amount";
+        return "a large amount of negative charges";
     }
+};
+
+var setElectronMessage = function (numElectrons) {
+    var message = getElectronsMessage(numElectrons);
+    electrons.textContent = message;
+    electrons.setAttribute("aria-valuetext", message);
+    electrons.value = numElectrons;
 };
 
 var updateElectrons = function (newPos) {
     if (isOnFloor(newPos)) {
         addCharge();
-        electrons.value = getElectronsMessage(numElectrons);
+        setElectronMessage(numElectrons);
         removeAlert();
     }
 };
