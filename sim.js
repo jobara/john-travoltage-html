@@ -71,7 +71,13 @@ var updateElectrons = function (newPos) {
 };
 
 var setFootValueText = function (newPos) {
-    var msg = isOnFloor(newPos) ? "foot is on the carpet" : "foot is off the carpet";
+    var msg = "foot is off the carpet";
+
+    if (isOnFloor(newPos)) {
+        msg = "foot is on the carpet.";
+        msg += numElectrons < 100 ? " A charge has been gained." : "";
+    }
+
     var position = "Position " + newPos + ", " + msg;
 
     footSlider.setAttribute("aria-valuetext", position);
