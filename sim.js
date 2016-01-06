@@ -1,7 +1,6 @@
 // vars
 var contactPosition = 15;
 var numElectrons = 0;
-var footPosition;
 var dischargeMsg = "A discharge has occurred";
 
 // Elements
@@ -15,6 +14,9 @@ var alertElm = document.createElement("p");
 alertElm.setAttribute("role", "alert");
 var alertMsg = document.createTextNode(dischargeMsg);
 alertElm.appendChild(alertMsg);
+
+// descriptions
+var defaultDesc = "John is standing with a foot on the rug, and his hand is very close to the doorknob.";
 
 // methods
 var addAlert = function () {
@@ -122,11 +124,26 @@ var setHandValueText = function (newPos) {
     handSlider.setAttribute("aria-valuetext", position);
 }
 
+var setSimDescription = function (text) {
+    description.textContent = text;
+};
+
+var setupSim = function (footPos, handPos, electrons) {
+    setSimDescription(defaultDesc);
+    removeAlert();
+
+    numElectrons = electrons || 0;
+    footSlider.value = footPos;
+    handSlider.value = handPos;
+
+    setFootValueText(footPos, true);
+    setHandValueText(handPos);
+};
+
 // event binding
 var handleFoot = function (event) {
     var newPos = Number(event.target.value);
     updateElectrons(newPos);
-    footPosition = newPos;
     setFootValueText(newPos);
 };
 
@@ -147,11 +164,8 @@ handSlider.addEventListener("input", handleHand);
 
 
 restartBtn.addEventListener("click", function (e) {
-    // TODO: reload the model instead of the page
-    document.location.reload(true);
+    setupSim(8, 8);
 });
 
-footPosition = footSlider.value
-
-setFootValueText(footSlider.value, true);
-setHandValueText(handSlider.value);
+// init
+setupSim(8, 8);
