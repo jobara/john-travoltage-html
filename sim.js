@@ -17,6 +17,11 @@ alertElm.appendChild(alertMsg);
 
 // descriptions
 var defaultDesc = "John is standing with a foot on the rug, and his hand is very close to the doorknob.";
+var footRubDesc = "John has rubbed his foot on the rug and has gained %electrons number of negative charges.";
+var handAwayDesc = "His hand has moved away from the doorknob, and is %distance it.";
+var handTowardDesc = "His hand has moved toward the doorknob, and is %distance it.";
+var handNoChangeDesc = "His hand is %distance the doorknob";
+
 
 // methods
 var addAlert = function () {
