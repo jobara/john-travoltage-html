@@ -70,12 +70,12 @@ var updateElectrons = function (newPos) {
     }
 };
 
-var setFootValueText = function (newPos) {
+var setFootValueText = function (newPos, isStart) {
     var msg = "foot is off the carpet";
 
     if (isOnFloor(newPos)) {
         msg = "foot is on the carpet.";
-        msg += numElectrons < 100 ? " A charge has been gained." : "";
+        msg += numElectrons < 100 && !isStart ? " A charge has been gained." : "";
     }
 
     var position = "Position " + newPos + ", " + msg;
@@ -153,5 +153,5 @@ restartBtn.addEventListener("click", function (e) {
 
 footPosition = footSlider.value
 
-setFootValueText(footSlider.value);
+setFootValueText(footSlider.value, true);
 setHandValueText(handSlider.value);
