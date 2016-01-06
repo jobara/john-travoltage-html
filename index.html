@@ -11,20 +11,20 @@
                 Movie actor John Travolta is standing with his foot now on the rug. His hand is closest to the door knob. The large number of negative charges in his body have been discharged and he still has a small amount of negative charges left.
             </p>
             <form>
-                <div>
-                    <label for="phet-foot-slider">Foot Position:</label>
-                    <input type="range" id="phet-foot-slider" min=0 max=30 step=1 value=8>
-                </div>
-
-                <div>
-                    <label for="phet-hand-slider">Hand Position:</label>
-                    <input type="range" id="phet-hand-slider" min=0 max=60 value=8>
-                </div>
-
-                <div>
-                    <label for="phet-numElectrons">Negative Charge:</label>
-                    <progress id="phet-numElectrons" role="levelindicator progress" value="0" max="100" aria-valuetext="no negative charges">no negative charges</progress>
-                </div>
+                <ul>
+                    <li>
+                        <label for="phet-numElectrons">Number of Negative Charges Gained:</label>
+                        <progress id="phet-numElectrons" role="levelindicator progress" value="0" max="100" aria-valuetext="no negative charges">no negative charges</progress>
+                    </li>
+                    <li>
+                        <label for="phet-foot-slider">Foot Position:</label>
+                        <input type="range" id="phet-foot-slider" min=0 max=30 step=1 value=8>
+                    </li>
+                    <li>
+                        <label for="phet-hand-slider">Hand Position:</label>
+                        <input type="range" id="phet-hand-slider" min=0 max=60 value=8>
+                    </li>
+                </ul>
 
                 <fieldset>
                     <legend>Options</legend>
