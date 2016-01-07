@@ -1,5 +1,5 @@
 // vars
-var contactPosition = 15;
+var doorKnobPosition = 50;
 var numElectrons = 0;
 var dischargeMsg = "A discharge has occurred";
 
@@ -35,7 +35,7 @@ var removeAlert = function () {
 };
 
 var discharge = function (newPos) {
-    if (newPos === contactPosition) {
+    if (newPos === doorKnobPosition) {
         numElectrons = 0;
         setElectronMessage(numElectrons);
         addAlert();
@@ -102,23 +102,29 @@ var isWithin = function (val, args) {
     return false;
 };
 
+var getDistance = function (a, b) {
+    return Math.abs(a - b);
+};
+
 var getHandMessage = function (newPos) {
-    if (newPos === 15) {
-        return "closest to the door knob";
-    } else if (isWithin(newPos, [13, 14], [16, 17])) {
-        return "very close to the door knob";
-    } else if (isWithin(newPos, [8, 12], [18, 22])) {
-        return "close to the door knob";
-    } else if (isWithin(newPos, [3, 7], [23, 27])) {
-        return "somewhat close to the door knob";
-    } else if (isWithin(newPos, [0, 2], [28, 32], [58, 60])) {
-        return "neither far or close to the door knob";
-    } else if (isWithin(newPos, [33, 37], [53, 57])) {
-        return "neither far or close to the door knob";
-    } else if (isWithin(newPos, [38, 42], [48, 52])) {
-        return "very far from the door knob";
-    } else if (isWithin(newPos, [43, 47])) {
-        return "farthest from the door knob";
+    var distance = getDistance(newPos, doorKnobPosition);
+    console.log("distance:", distance);
+    if (distance === 0) {
+        return "closest to the doorknob";
+    } else if (isWithin(distance, [1, 8])) {
+        return "very close to the doorknob";
+    } else if (isWithin(distance, [9, 16])) {
+        return "close to the doorknob";
+    } else if (isWithin(distance, [17, 24])) {
+        return "somewhat close to the doorknob";
+    } else if (isWithin(distance, [25, 32])) {
+        return "neither far nor close to the doorknob";
+    } else if (isWithin(distance, [33, 40])) {
+        return "far from the doorknob";
+    } else if (isWithin(distance, [41, 49])) {
+        return "very far from the doorknob";
+    } else if (distance === 50) {
+        return "farthest from the doorknob";
     }
 };
 
@@ -169,8 +175,8 @@ handSlider.addEventListener("input", handleHand);
 
 
 restartBtn.addEventListener("click", function (e) {
-    setupSim(8, 8);
+    setupSim(8, 38);
 });
 
 // init
-setupSim(8, 8);
+setupSim(8, 38);
