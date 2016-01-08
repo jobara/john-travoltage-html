@@ -25,6 +25,7 @@ var defaultDesc = "John is standing with a foot on the rug, and his hand is very
 var handAwayDesc = "His hand has moved away from the doorknob, and is %distance it.";
 var handTowardDesc = "His hand has moved toward the doorknob, and is %distance it.";
 var handNoChangeDesc = "His hand is %distance the doorknob";
+var handValueText = "Position %position, %distance the doorknob";
 
 
 /***********
@@ -47,6 +48,7 @@ var updateDescription = function () {
     var currentHandPosition = Number(handSlider.value);
     var priorDist = getDistance(priorHandPosition, doorKnobPosition);
     var currentDist = getDistance(currentHandPosition, doorKnobPosition);
+    var distanceDesc = getHandDistanceDesc(currentDist);
 
     var handTemplate = handNoChangeDesc;
 
@@ -56,8 +58,7 @@ var updateDescription = function () {
         handTemplate = handTowardDesc;
     }
 
-    // TODO: Convert distance number to a category message.
-    description.textContent = strTemplate(handTemplate, {distance: currentDist});
+    description.textContent = strTemplate(handTemplate, {distance: distanceDesc});
     priorHandPosition = currentHandPosition;
 };
 
@@ -143,32 +144,32 @@ var getDistance = function (a, b) {
     return Math.abs(a - b);
 };
 
-var getHandMessage = function (newPos) {
-    var distance = getDistance(newPos, doorKnobPosition);
+var getHandDistanceDesc = function (distance) {
     if (distance === 0) {
-        return "closest to the doorknob";
+        return "closest to";
     } else if (isWithin(distance, [1, 8])) {
-        return "very close to the doorknob";
+        return "very close to";
     } else if (isWithin(distance, [9, 16])) {
-        return "close to the doorknob";
+        return "close to";
     } else if (isWithin(distance, [17, 24])) {
-        return "somewhat close to the doorknob";
+        return "somewhat close to";
     } else if (isWithin(distance, [25, 32])) {
-        return "neither far nor close to the doorknob";
+        return "neither far nor close to";
     } else if (isWithin(distance, [33, 40])) {
-        return "far from the doorknob";
+        return "far from";
     } else if (isWithin(distance, [41, 49])) {
-        return "very far from the doorknob";
+        return "very far from";
     } else if (distance === 50) {
-        return "farthest from the doorknob";
+        return "farthest from";
     }
 };
 
 var setHandValueText = function (newPos) {
-    var msg = getHandMessage(newPos);
-    var position = "Position " + newPos + ", " + msg;
+    var distance = getDistance(newPos, doorKnobPosition);
+    var distanceDesc = getHandDistanceDesc(distance);
+    var valueText = strTemplate(handValueText, {position: newPos, distance: distanceDesc});
 
-    handSlider.setAttribute("aria-valuetext", position);
+    handSlider.setAttribute("aria-valuetext", valueText);
 }
 
 var setSimDescription = function (text) {
