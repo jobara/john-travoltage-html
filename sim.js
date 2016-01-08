@@ -73,7 +73,7 @@ var removeAlert = function () {
 };
 
 var discharge = function (newPos) {
-    if (newPos === doorKnobPosition) {
+    if (newPos === doorKnobPosition && numElectrons) {
         numElectrons = 0;
         setElectronMessage(numElectrons);
         addAlert();
