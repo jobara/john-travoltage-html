@@ -1,6 +1,10 @@
-// vars
+/*************
+ * variables *
+ *************/
+
 var doorKnobPosition = 50;
 var numElectrons = 0;
+var priorHandPosition;
 var dischargeMsg = "A discharge has occurred";
 
 // Elements
@@ -17,13 +21,46 @@ alertElm.appendChild(alertMsg);
 
 // descriptions
 var defaultDesc = "John is standing with a foot on the rug, and his hand is very close to the doorknob.";
-var footRubDesc = "John has rubbed his foot on the rug and has gained %electrons number of negative charges.";
+// var footRubDesc = "John has rubbed his foot on the rug and has gained %electrons number of negative charges.";
 var handAwayDesc = "His hand has moved away from the doorknob, and is %distance it.";
 var handTowardDesc = "His hand has moved toward the doorknob, and is %distance it.";
 var handNoChangeDesc = "His hand is %distance the doorknob";
 
 
-// methods
+/***********
+ * Methods *
+ ***********/
+
+var toRegExp = function (str) {
+    return new RegExp(str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), "g");
+};
+
+var strTemplate = function (template, values) {
+    for (var key in values) {
+        var re = toRegExp("%" + key);
+        template = template.replace(re, values[key]);
+    }
+  return template;
+}
+
+var updateDescription = function () {
+    var currentHandPosition = Number(handSlider.value);
+    var priorDist = getDistance(priorHandPosition, doorKnobPosition);
+    var currentDist = getDistance(currentHandPosition, doorKnobPosition);
+
+    var handTemplate = handNoChangeDesc;
+
+    if (priorDist < currentDist) {
+        handTemplate = handAwayDesc;
+    } else if (priorDist > currentDist) {
+        handTemplate = handTowardDesc;
+    }
+
+    // TODO: Convert distance number to a category message.
+    description.textContent = strTemplate(handTemplate, {distance: currentDist});
+    priorHandPosition = currentHandPosition;
+};
+
 var addAlert = function () {
     description.parentNode.insertBefore(alertElm, description);
 };
@@ -108,7 +145,6 @@ var getDistance = function (a, b) {
 
 var getHandMessage = function (newPos) {
     var distance = getDistance(newPos, doorKnobPosition);
-    console.log("distance:", distance);
     if (distance === 0) {
         return "closest to the doorknob";
     } else if (isWithin(distance, [1, 8])) {
@@ -146,12 +182,16 @@ var setupSim = function (footPos, handPos, electrons) {
     numElectrons = electrons || 0;
     footSlider.value = footPos;
     handSlider.value = handPos;
+    priorHandPosition = handPos;
 
     setFootValueText(footPos, true);
     setHandValueText(handPos);
 };
 
-// event binding
+/*****************
+ * event binding *
+ *****************/
+
 var handleFoot = function (event) {
     var newPos = Number(event.target.value);
     updateElectrons(newPos);
@@ -162,21 +202,47 @@ var handleHand = function (event) {
     var newPos = Number(event.target.value);
     setHandValueText(newPos);
     discharge(newPos);
+    updateDescription();
 };
 
-// Handling both "input" and "change" events so that we get consistent updates
-// from both keyboard and mouse across platforms.
+// Due to the variability of input and change event firing across browsers,
+// it is necessary to track if the input event was fired and if not, to
+// handle the change event instead.
+// see: https://wiki.fluidproject.org/pages/viewpage.action?pageId=61767683
 
-footSlider.addEventListener("change", handleFoot, false);
-footSlider.addEventListener("input", handleFoot, false);
+var handInputEventFired = false;
+var footInputEventFired = false;
 
-handSlider.addEventListener("change", handleHand);
-handSlider.addEventListener("input", handleHand);
+// foot slider
+footSlider.addEventListener("change", function (event) {
+    if (!footInputEventFired) {
+        handleFoot(event);
+    }
+    footInputEventFired = false;
+}, false);
+footSlider.addEventListener("input", function (event) {
+    handleFoot(event);
+    footInputEventFired = true;
+}, false);
 
+// hand slider
+handSlider.addEventListener("change", function (event) {
+    if (!handInputEventFired) {
+        handleHand(event);
+    }
+    handInputEventFired = false;
+});
+handSlider.addEventListener("input", function (event) {
+    handleHand(event);
+    handInputEventFired = true;
+});
 
+// restart button
 restartBtn.addEventListener("click", function (e) {
     setupSim(8, 38);
 });
 
-// init
+/********
+ * Init *
+ ********/
 setupSim(8, 38);
