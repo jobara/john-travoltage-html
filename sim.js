@@ -5,6 +5,8 @@
 var doorKnobPosition = 50;
 var numElectrons = 0;
 var priorHandPosition;
+var priorHandPosition;
+var priorFootPosition;
 var dischargeMsg = "A discharge has occurred";
 
 // Elements
@@ -88,8 +90,27 @@ var isOnFloor = function (newPos) {
     return newPos >= 10 && newPos <= 20;
 };
 
-var addCharge = function () {
-    numElectrons = Math.min(100, numElectrons + 1);
+// Based on: 
+// Asaf Karagila (http://math.stackexchange.com/users/622/asaf-karagila),
+// What is the Shortest possible formula to find the intersection between a set
+// of two ranges of number, URL (version: 2010-12-29):
+// http://math.stackexchange.com/q/15809
+var numIntersectingPoints = function (range1, range2) {
+    return Math.max(0, Math.min(range1.max, range2.max) - Math.max(range1.min, range2.min));
+};
+
+var electronsGained = function (newPos, oldPos) {
+    var floor = {min: 10, max: 20};
+    var pos = {
+        min: Math.min(newPos, oldPos),
+        max: Math.max(newPos, oldPos)
+    };
+
+    return numIntersectingPoints(floor, pos);
+};
+
+var addCharge = function (electrons) {
+    numElectrons = Math.min(100, numElectrons + electrons);
 };
 
 var getElectronsMessage = function (numElectrons) {
@@ -112,10 +133,10 @@ var setElectronMessage = function (numElectrons) {
 };
 
 var updateElectrons = function (newPos) {
-    if (isOnFloor(newPos)) {
-        addCharge();
+    var gained = electronsGained(newPos, priorFootPosition);
+    if (gained) {
+        addCharge(gained);
         setElectronMessage(numElectrons);
-        removeAlert();
     }
 };
 
@@ -186,6 +207,7 @@ var setupSim = function (footPos, handPos, electrons) {
 
     numElectrons = electrons || 0;
     footSlider.value = footPos;
+    priorFootPosition = footPos;
     handSlider.value = handPos;
     priorHandPosition = handPos;
 
@@ -201,6 +223,8 @@ var handleFoot = function (event) {
     var newPos = Number(event.target.value);
     updateElectrons(newPos);
     setFootValueText(newPos);
+    removeAlert();
+    priorFootPosition = newPos;
 };
 
 var handleHand = function (event) {
