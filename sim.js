@@ -72,8 +72,12 @@ var removeAlert = function () {
     }
 };
 
-var discharge = function (newPos) {
-    if (newPos === doorKnobPosition && numElectrons) {
+var discharge = function (newPos, oldPos) {
+    // Will fire a discharge if there is a charge gained and the hand crosses or lands on the doorknob.
+    // However, if the newPos is at either extreme (0 or 100) no discharge will be fired. This is
+    // to prevent the case where home/end are pressed on the keyboard and the hand jumps to the extreme.
+    // It is believe that this is a special case and does not reflect a simulation of hand movement.
+    if (isWithin(doorKnobPosition, [newPos, oldPos]) && numElectrons && newPos !== 100 && newPos) {
         numElectrons = 0;
         setElectronMessage(numElectrons);
         addAlert();
@@ -202,7 +206,7 @@ var handleFoot = function (event) {
 var handleHand = function (event) {
     var newPos = Number(event.target.value);
     setHandValueText(newPos);
-    discharge(newPos);
+    discharge(newPos, priorHandPosition);
     updateDescription();
 };
 
