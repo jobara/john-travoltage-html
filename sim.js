@@ -18,8 +18,6 @@ var restartBtn = document.getElementById("phet-restart");
 
 var alertElm = document.createElement("p");
 alertElm.setAttribute("role", "alert");
-// var alertMsg = document.createTextNode(dischargeMsg);
-// alertElm.appendChild(alertMsg);
 
 // descriptions
 var defaultDesc = "John is standing with a foot %foot the rug, and his hand is %hand to the doorknob.";
