@@ -196,9 +196,6 @@ var init = function () {
     }
 
     var setupSim = function (footPos, handPos, charges) {
-        updateDescription();
-        removeAlert();
-
         footRubbed = false;
         numElectrons = charges || 0;
         footSlider.value = footPos;
@@ -209,6 +206,9 @@ var init = function () {
 
         setFootValueText(footPos, true);
         setHandValueText(handPos);
+
+        updateDescription();
+        removeAlert();
     };
 
     /*****************
