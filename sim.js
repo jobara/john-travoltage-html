@@ -7,7 +7,7 @@ var numElectrons = 0;
 var priorHandPosition;
 var priorHandPosition;
 var priorFootPosition;
-var dischargeMsg = "A discharge has occurred";
+var footRubbed = false;
 
 // Elements
 var description = document.getElementById("phet-description");
@@ -18,11 +18,15 @@ var restartBtn = document.getElementById("phet-restart");
 
 var alertElm = document.createElement("p");
 alertElm.setAttribute("role", "alert");
-var alertMsg = document.createTextNode(dischargeMsg);
-alertElm.appendChild(alertMsg);
+// var alertMsg = document.createTextNode(dischargeMsg);
+// alertElm.appendChild(alertMsg);
 
 // descriptions
-var defaultDesc = "John is standing with a foot on the rug, and his hand is very close to the doorknob.";
+// var defaultDesc = "John is standing with a foot on the rug, and his hand is very close to the doorknob.";
+var defaultDesc = "John is standing with a foot %foot the rug, and his hand is %hand to the doorknob.";
+var chargeDesc = "John is standing with a foot %foot the rug, and his hand is %hand to the doorknob. He has %charges."
+var dischargeMsg = "%quantityDischarged were discharged. %quantityRemaining remain.";
+// var dischargeMsg = "A discharge has occurred";
 // var footRubDesc = "John has rubbed his foot on the rug and has gained %electrons number of negative charges.";
 var handAwayDesc = "His hand has moved away from the doorknob, and is %distance it.";
 var handTowardDesc = "His hand has moved toward the doorknob, and is %distance it.";
@@ -47,24 +51,20 @@ var strTemplate = function (template, values) {
 }
 
 var updateDescription = function () {
-    var currentHandPosition = Number(handSlider.value);
-    var priorDist = getDistance(priorHandPosition, doorKnobPosition);
-    var currentDist = getDistance(currentHandPosition, doorKnobPosition);
-    var distanceDesc = getHandDistanceDesc(currentDist);
+    var desc = footRubbed ? chargeDesc : defaultDesc;
+    var handDistance = getDistance(Number(handSlider.value), doorKnobPosition);
 
-    var handTemplate = handNoChangeDesc;
+    var tokens = {
+        foot: isOnFloor(Number(footSlider.value)) ? "on" : "off",
+        hand: getHandDistanceDesc(handDistance),
+        charges: getElectronsMessage(numElectrons)
+    };
 
-    if (priorDist < currentDist) {
-        handTemplate = handAwayDesc;
-    } else if (priorDist > currentDist) {
-        handTemplate = handTowardDesc;
-    }
-
-    description.textContent = strTemplate(handTemplate, {distance: distanceDesc});
-    priorHandPosition = currentHandPosition;
+    description.textContent = strTemplate(desc, tokens);
 };
 
-var addAlert = function () {
+var addAlert = function (alertMessage) {
+    alertElm.textContent = alertMessage;
     description.parentNode.insertBefore(alertElm, description);
 };
 
@@ -80,9 +80,13 @@ var discharge = function (newPos, oldPos) {
     // to prevent the case where home/end are pressed on the keyboard and the hand jumps to the extreme.
     // It is believe that this is a special case and does not reflect a simulation of hand movement.
     if (isWithin(doorKnobPosition, [newPos, oldPos]) && numElectrons && newPos !== 100 && newPos) {
+        var alertMessage = strTemplate(dischargeMsg, {
+            quantityDischarged: getElectronsMessage(numElectrons),
+            quantityRemaining: getElectronsMessage(0)
+        });
         numElectrons = 0;
         setElectronMessage(numElectrons);
-        addAlert();
+        addAlert(alertMessage);
     }
 }
 
@@ -90,7 +94,7 @@ var isOnFloor = function (newPos) {
     return newPos >= 10 && newPos <= 20;
 };
 
-// Based on: 
+// Based on:
 // Asaf Karagila (http://math.stackexchange.com/users/622/asaf-karagila),
 // What is the Shortest possible formula to find the intersection between a set
 // of two ranges of number, URL (version: 2010-12-29):
@@ -135,6 +139,7 @@ var setElectronMessage = function (numElectrons) {
 var updateElectrons = function (newPos) {
     var gained = electronsGained(newPos, priorFootPosition);
     if (gained) {
+        footRubbed = true;
         addCharge(gained);
         setElectronMessage(numElectrons);
     }
@@ -201,15 +206,18 @@ var setSimDescription = function (text) {
     description.textContent = text;
 };
 
-var setupSim = function (footPos, handPos, electrons) {
-    setSimDescription(defaultDesc);
+var setupSim = function (footPos, handPos, charges) {
+    // setSimDescription(defaultDesc);
+    updateDescription();
     removeAlert();
 
-    numElectrons = electrons || 0;
+    footRubbed = false;
+    numElectrons = charges || 0;
     footSlider.value = footPos;
     priorFootPosition = footPos;
     handSlider.value = handPos;
     priorHandPosition = handPos;
+    electrons.value = numElectrons;
 
     setFootValueText(footPos, true);
     setHandValueText(handPos);
@@ -224,6 +232,7 @@ var handleFoot = function (event) {
     updateElectrons(newPos);
     setFootValueText(newPos);
     removeAlert();
+    updateDescription();
     priorFootPosition = newPos;
 };
 
@@ -232,6 +241,7 @@ var handleHand = function (event) {
     setHandValueText(newPos);
     discharge(newPos, priorHandPosition);
     updateDescription();
+    priorHandPosition = newPos;
 };
 
 // Due to the variability of input and change event firing across browsers,
