@@ -1,3 +1,26 @@
+body {
+    font-size: 16px;
+}
+
+article {
+    width: 50%;
+    min-width: 30rem;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+}
+
 progress {
     width: 25rem;
+}
+
+.alert {
+    outline: 0.1rem dotted #1a1a1a;
+    background-color: #efefef;
+    padding: 0.5rem;
 }

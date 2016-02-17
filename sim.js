@@ -19,10 +19,11 @@ var init = function () {
 
     var alertElm = document.createElement("p");
     alertElm.setAttribute("role", "alert");
+    alertElm.setAttribute("class", "alert");
 
     // descriptions
-    var defaultDesc = "John is standing with a foot %foot the rug, and his hand is %hand to the doorknob.";
-    var chargeDesc = "John is standing with a foot %foot the rug, and his hand is %hand to the doorknob. He has %charges."
+    var defaultDesc = "John is standing with a foot %foot the rug, and his hand is %hand the doorknob.";
+    var chargeDesc = "John is standing with a foot %foot the rug, and his hand is %hand the doorknob. He has %charges."
     var dischargeMsg = "%quantityDischarged were discharged. %quantityRemaining remain.";
     var handValueText = "Position %position, %distance the doorknob";
 
