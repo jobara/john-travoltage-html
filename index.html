@@ -10,8 +10,8 @@
         <article aria-labelledby="phet-name" aria-describedby="phet-description">
             <h1 id="phet-name">John Travoltage</h1>
             <!-- <p id="phet-alert"></p> -->
-            <h2>Description (updates with changes)</h2>
-            <p id="phet-description">
+            <h2>Description</h2>
+            <p id="phet-description" role="status">
                 Movie actor John Travolta is standing with his foot now on the rug. His hand is closest to the door knob. The large number of negative charges in his body have been discharged and he still has a small amount of negative charges left.
             </p>
 
@@ -24,11 +24,11 @@
                     </li>
                     <li>
                         <label for="phet-foot-slider">Foot Position:</label>
-                        <input type="range" id="phet-foot-slider" min=0 max=30 step=1 value=8>
+                        <input type="range" id="phet-foot-slider" aria-controls="phet-description" min=0 max=30 step=1 value=8>
                     </li>
                     <li>
                         <label for="phet-hand-slider">Hand Position:</label>
-                        <input type="range" id="phet-hand-slider" min=0 max=100 value=38>
+                        <input type="range" id="phet-hand-slider" aria-controls="phet-description" min=0 max=100 value=38>
                     </li>
                 </ul>
 
