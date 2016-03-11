@@ -20,6 +20,8 @@ var init = function () {
     var alertElm = document.createElement("p");
     alertElm.setAttribute("role", "alert");
     alertElm.setAttribute("class", "alert");
+    alertElm.setAttribute("aria-atomic", "false");
+    alertElm.setAttribute("aria-live", "assertive");
 
     // descriptions
     var defaultDesc = "John is standing with a foot %foot the rug, and his hand is %hand the doorknob.";
@@ -54,7 +56,14 @@ var init = function () {
             charges: getElectronsMessage(numElectrons)
         };
 
-        description.textContent = strTemplate(desc, tokens);
+        var newString = strTemplate(desc, tokens);
+        if (description.textContent != newString) {
+            /* This condition controls whether the content gets updated.
+               FF treats content as being changed even if the values are identical,
+               thus causing a screen reader to announce. This check prevents this
+               behaviour. */
+            description.textContent = newString;
+        }
     };
 
     var addAlert = function (alertMessage) {
@@ -127,6 +136,7 @@ var init = function () {
         var message = getElectronsMessage(numElectrons);
         electrons.textContent = message;
         electrons.setAttribute("aria-valuetext", message);
+        electrons.setAttribute("aria-valuenow",numElectrons);
         electrons.value = numElectrons;
     };
 
@@ -150,6 +160,7 @@ var init = function () {
         var position = "Position " + newPos + ", " + msg;
 
         footSlider.setAttribute("aria-valuetext", position);
+        footSlider.setAttribute("aria-valuenow", newPos);
     };
 
     var isWithin = function (val, args) {
