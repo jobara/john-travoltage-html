@@ -20,8 +20,6 @@ var init = function () {
     var alertElm = document.createElement("p");
     alertElm.setAttribute("role", "alert");
     alertElm.setAttribute("class", "alert");
-    alertElm.setAttribute("aria-atomic", "false");
-    alertElm.setAttribute("aria-live", "assertive");
 
     // descriptions
     var defaultDesc = "John is standing with a foot %foot the rug, and his hand is %hand the doorknob.";
