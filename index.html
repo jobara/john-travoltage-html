@@ -9,14 +9,11 @@
     <body>
         <article aria-labelledby="phet-name" aria-describedby="phet-description">
             <h1 id="phet-name">John Travoltage</h1>
-            <!-- <p id="phet-alert"></p> -->
             <h2>Description</h2>
 
-            <div aria-atomic="false" aria-live="assertive">
-                <div role="status" id="phet-description">
-                    Movie actor John Travolta is standing with his foot now on the rug. His hand is closest to the door knob. The large number of negative charges in his body have been discharged and he still has a small amount of negative charges left.
-                </div>
-            </div>
+            <p aria-atomic="false" aria-live="assertive" id="phet-description">
+                Movie actor John Travolta is standing with his foot now on the rug. His hand is closest to the door knob. The large number of negative charges in his body have been discharged and he still has a small amount of negative charges left.
+            </p>
 
             <h2>Controls</h2>
             <form>
@@ -27,11 +24,11 @@
                     </li>
                     <li>
                         <label for="phet-foot-slider">Foot Position:</label>
-                        <input role="slider" type="range" id="phet-foot-slider" min=0 max=30 step=1 value=8 aria-controls="phet-description">
+                        <input role="slider" type="range" id="phet-foot-slider" min=0 max=30 step=1 value=8 aria-controls="phet-description phet-numElectrons">
                     </li>
                     <li>
                         <label for="phet-hand-slider">Hand Position:</label>
-                        <input role="slider" type="range" id="phet-hand-slider" min=0 max=100 value=38 aria-controls="phet-description">
+                        <input role="slider" type="range" id="phet-hand-slider" min=0 max=100 value=38 aria-controls="phet-description phet-numElectrons">
                     </li>
                 </ul>
 
