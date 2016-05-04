@@ -16,6 +16,8 @@ var init = function () {
     var handSlider = document.getElementById("phet-hand-slider");
     var electrons = document.getElementById("phet-numElectrons");
     var restartBtn = document.getElementById("phet-restart");
+    var totalChargesStatus = document.getElementById("phet-total-charges");
+    var totalChargesStatus2 = document.getElementById("phet-total-charges-2");
 
     var alertElm = document.createElement("p");
     alertElm.setAttribute("role", "alert");
@@ -26,7 +28,7 @@ var init = function () {
     var chargeDesc = "John is standing with a foot %foot the rug, and his hand is %hand the doorknob. He has %charges."
     var dischargeMsg = "%quantityDischarged were discharged. %quantityRemaining remain.";
     var handValueText = "Position %position, %distance the doorknob";
-
+    var totalCharges = "Total negative charges: %numCharges."
 
     /***********
      * Methods *
@@ -87,6 +89,8 @@ var init = function () {
             });
             numElectrons = 0;
             setElectronMessage(numElectrons);
+            setTotalChargesStatus(numElectrons);
+            setTotalChargesStatus2(numElectrons);
             addAlert(alertMessage);
         }
     }
@@ -138,12 +142,29 @@ var init = function () {
         electrons.value = numElectrons;
     };
 
+    var setTotalChargesStatus = function (numElectrons) {
+        if (totalChargesStatus !== null) {
+            var statusMessage = strTemplate(totalCharges, {
+                numCharges: numElectrons
+            });
+            totalChargesStatus.textContent = statusMessage;
+        }
+    }
+
+    var setTotalChargesStatus2 = function (numElectrons) {
+        if (totalChargesStatus2 !== null) {
+            totalChargesStatus2.textContent = numElectrons;
+        }
+    }
+
     var updateElectrons = function (newPos) {
         var gained = electronsGained(newPos, priorFootPosition);
         if (gained) {
             footRubbed = true;
             addCharge(gained);
             setElectronMessage(numElectrons);
+            setTotalChargesStatus(numElectrons);
+            setTotalChargesStatus2(numElectrons);
         }
     };
 

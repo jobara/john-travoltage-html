@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="./sim.css" />
+
+        <script type="text/javascript" src="./sim.js"></script>
+
+        <!--
+        John Travoltage HTML simulation - Read-only text field and label.
+
+        The number of negative charges is reported to the user using a
+        read-only text field and label.
+        -->
+    </head>
+    <body>
+        <article aria-labelledby="phet-name" aria-describedby="phet-description">
+            <h1 id="phet-name">John Travoltage</h1>
+            <h2>Description</h2>
+
+            <p aria-atomic="false" aria-live="assertive" id="phet-description">
+                Movie actor John Travolta is standing with his foot now on the rug. His hand is closest to the door knob. The large number of negative charges in his body have been discharged and he still has a small amount of negative charges left.
+            </p>
+
+            <h2>Controls</h2>
+            <form>
+                <ul>
+                    <!-- Using inline styles just to get the demo to work with
+                    the different Charge reporting implementations. -->
+                    <li style="display: none;visibility:hidden;">
+                        <label for="phet-numElectrons">Number of Negative Charges Gained:</label>
+                        <progress id="phet-numElectrons" role="levelindicator progress" aria-valuemin="0" aria-valuemax="100" value="0" max="100" aria-valuetext="no negative charges">no negative charges</progress>
+                    </li>
+                    <li>
+                        <label for="phet-total-charges-2" role="status">Total negative charges:
+                            <text id="phet-total-charges-2" aria-readonly="true">0</text>
+                        </label>
+                    </li>
+                    <li>
+                        <label for="phet-foot-slider">Foot Position:</label>
+                        <input role="slider" type="range" id="phet-foot-slider" min=0 max=30 step=1 value=8 aria-controls="phet-description phet-numElectrons">
+                    </li>
+                    <li>
+                        <label for="phet-hand-slider">Hand Position:</label>
+                        <input role="slider" type="range" id="phet-hand-slider" min=0 max=100 value=38 aria-controls="phet-description phet-numElectrons">
+                    </li>
+                </ul>
+
+                <fieldset>
+                    <legend>Options (currently not functional)</legend>
+                    <input type="checkbox" id="phet-enableSounds" disabled='disabled'>
+                    <label for="phet-enableSounds">Enable Sounds</label>
+                    <input type="button" id="phet-restart" value="Restart Simulation" disabled='disabled'>
+                </fieldset>
+            </form>
+        </article>
+
+        <script type="text/javascript">
+            init();
+        </script>
+    </body>
+</html>
