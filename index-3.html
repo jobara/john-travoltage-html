@@ -14,6 +14,20 @@
         -->
     </head>
     <body>
+
+        <aside>
+            <p>
+                The following is an example of the web-standards "first" approach to adding accessibility to a simulation.
+            </p>
+            <p>
+                The John Travoltage sim was re-imagined using native HTML elements, and the design and implementation in
+                improved based on feedback with collaborators.
+            </p>
+            <p>
+                This HTML version is then integrated with the graphical version of the sim as the parallel accessible DOM.
+            </p>
+        </aside>
+
         <article aria-labelledby="phet-name" aria-describedby="phet-description">
             <h1 id="phet-name">John Travoltage</h1>
             <h2>Description</h2>
@@ -46,13 +60,26 @@
                 </ul>
 
                 <fieldset>
-                    <legend>Options (currently not functional)</legend>
+                    <legend>Options (currently not functional in this demo)</legend>
                     <input type="checkbox" id="phet-enableSounds" disabled='disabled'>
                     <label for="phet-enableSounds">Enable Sounds</label>
                     <input type="button" id="phet-restart" value="Restart Simulation" disabled='disabled'>
                 </fieldset>
             </form>
         </article>
+
+        <aside>
+            <p>
+                Ideal browser / screen reader combinations:
+                <ul>
+                    <li> Mac OS: Safari with VoiceOver</li>
+                    <li> Windows: Firefox with NVDA</li>
+                </ul>
+            </p>
+            <p>
+                Known issue: If the hand is already closest to the doorknob, and more charges are gained, a discharge does not occur as it should. Instead you will have to move the hand first.</li>
+            </p>
+        </aside>
 
         <script type="text/javascript">
             init();
