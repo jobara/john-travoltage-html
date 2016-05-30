@@ -26,6 +26,13 @@
             <p>
                 This HTML version is then integrated with the graphical version of the sim as the parallel accessible DOM.
             </p>
+            <p>
+                Ideal browser / screen reader combinations:
+                <ul>
+                    <li> Mac OS: Safari with VoiceOver</li>
+                    <li> Windows: Firefox with NVDA</li>
+                </ul>
+            </p>
         </aside>
 
         <article aria-labelledby="phet-name" aria-describedby="phet-description">
@@ -33,21 +40,21 @@
             <h2>Description</h2>
 
             <p aria-atomic="false" aria-live="assertive" id="phet-description">
-                Movie actor John Travolta is standing with his foot now on the rug. His hand is closest to the door knob. The large number of negative charges in his body have been discharged and he still has a small amount of negative charges left.
+                Movie actor John Travolta is standing with his foot now on the rug. His hand is closest to the door knob. The large number of electrons in his body have been discharged and he still has a small amount of electrons left.
             </p>
 
             <h2>Controls</h2>
             <form>
                 <p id="phet-total-charges" role="status">
-                    Total negative charges: 0.
+                    Total electrons: 0.
                 </p>
 
                 <ul>
                     <!-- Using inline styles just to get the demo to work with
                     the different Charge reporting implementations. -->
                     <li style="display: none;visibility:hidden;">
-                        <label for="phet-numElectrons">Number of Negative Charges Gained:</label>
-                        <progress id="phet-numElectrons" role="levelindicator progress" aria-valuemin="0" aria-valuemax="100" value="0" max="100" aria-valuetext="no negative charges">no negative charges</progress>
+                        <label for="phet-numElectrons">Number of Electrons Gained:</label>
+                        <progress id="phet-numElectrons" role="levelindicator progress" aria-valuemin="0" aria-valuemax="100" value="0" max="100" aria-valuetext="no electrons">no electrons</progress>
                     </li>
                     <li>
                         <label for="phet-foot-slider">Foot Position:</label>
@@ -69,13 +76,6 @@
         </article>
 
         <aside>
-            <p>
-                Ideal browser / screen reader combinations:
-                <ul>
-                    <li> Mac OS: Safari with VoiceOver</li>
-                    <li> Windows: Firefox with NVDA</li>
-                </ul>
-            </p>
             <p>
                 Known issue: If the hand is already closest to the doorknob, and more charges are gained, a discharge does not occur as it should. Instead you will have to move the hand first.</li>
             </p>
