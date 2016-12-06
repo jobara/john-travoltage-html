@@ -25,10 +25,10 @@ var init = function () {
 
     // descriptions
     var defaultDesc = "John is standing with a foot %foot the rug, and his hand is %hand the doorknob.";
-    var chargeDesc = "John is standing with a foot %foot the rug, and his hand is %hand the doorknob. He has %charges."
-    var dischargeMsg = "%quantityDischarged were discharged. %quantityRemaining remain.";
+    var chargeDesc = "John is standing with a foot %foot the rug, and his hand is %hand the doorknob."
+    var dischargeMsg = "Electrons were discharged.";
     var handValueText = "Position %position, %distance the doorknob";
-    var totalCharges = "Total negative charges: %numCharges."
+    var totalCharges = "Total electrons: %numCharges."
 
     /***********
      * Methods *
@@ -52,8 +52,7 @@ var init = function () {
 
         var tokens = {
             foot: isOnFloor(Number(footSlider.value)) ? "on" : "off",
-            hand: getHandDistanceDesc(handDistance),
-            charges: getElectronsMessage(numElectrons)
+            hand: getHandDistanceDesc(handDistance)
         };
 
         var newString = strTemplate(desc, tokens);
@@ -83,14 +82,10 @@ var init = function () {
         // to prevent the case where home/end are pressed on the keyboard and the hand jumps to the extreme.
         // It is believe that this is a special case and does not reflect a simulation of hand movement.
         if (isWithin(doorKnobPosition, [newPos, oldPos]) && numElectrons && newPos !== 100 && newPos) {
-            var alertMessage = strTemplate(dischargeMsg, {
-                quantityDischarged: getElectronsMessage(numElectrons),
-                quantityRemaining: getElectronsMessage(0)
-            });
+            var alertMessage = strTemplate(dischargeMsg);
+            var previousNumElectrons = numElectrons;
             numElectrons = 0;
-            setElectronMessage(numElectrons);
-            setTotalChargesStatus(numElectrons);
-            setTotalChargesStatus2(numElectrons);
+            setTotalChargesStatus(numElectrons, previousNumElectrons);
             addAlert(alertMessage);
         }
     }
@@ -124,13 +119,13 @@ var init = function () {
 
     var getElectronsMessage = function (numElectrons) {
         if (numElectrons <= 0) {
-            return "no negative charges";
+            return "no electrons";
         } else if (numElectrons < 34) {
-            return "a small amount of negative charges";
+            return "a small amount of electrons";
         } else if (numElectrons < 67) {
-            return "a moderate amount of negative charges";
+            return "a moderate amount of electrons";
         } else if (numElectrons >= 67) {
-            return "a large amount of negative charges";
+            return "a large amount of electrons";
         }
     };
 
@@ -142,18 +137,16 @@ var init = function () {
         electrons.value = numElectrons;
     };
 
-    var setTotalChargesStatus = function (numElectrons) {
+    var setTotalChargesStatus = function (numElectrons, previousNumElectrons) {
         if (totalChargesStatus !== null) {
             var statusMessage = strTemplate(totalCharges, {
-                numCharges: numElectrons
+                 numCharges: numElectrons
             });
-            totalChargesStatus.textContent = statusMessage;
-        }
-    }
 
-    var setTotalChargesStatus2 = function (numElectrons) {
-        if (totalChargesStatus2 !== null) {
-            totalChargesStatus2.textContent = numElectrons;
+            if (numElectrons == 0) {
+                statusMessage = "Total electrons: Discharge occurred. Electrons decreased from " + previousNumElectrons + " to " + numElectrons;
+            }
+            totalChargesStatus.textContent = statusMessage;
         }
     }
 
@@ -164,7 +157,6 @@ var init = function () {
             addCharge(gained);
             setElectronMessage(numElectrons);
             setTotalChargesStatus(numElectrons);
-            setTotalChargesStatus2(numElectrons);
         }
     };
 
@@ -173,7 +165,6 @@ var init = function () {
 
         if (isOnFloor(newPos)) {
             msg = "foot is on the carpet.";
-            msg += numElectrons < 100 && !isStart ? " A charge has been gained." : "";
         }
 
         var position = "Position " + newPos + ", " + msg;
